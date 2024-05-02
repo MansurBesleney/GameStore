@@ -3,7 +3,7 @@ GET http://localhost:5115/games
 
 ###
 
-GET http://localhost:5115/games/1
+GET http://localhost:5115/games/3
 
 ###
 

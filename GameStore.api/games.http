@@ -24,9 +24,9 @@ Content-Type: application/json
 
 {
     "id": 1,
-    "name": "Red Dead Redemption 2 GOTY Edition",
+    "name": "Red Dead Redemption 2 GOTY ",
     "genre": "Masterpiece",
-    "price": 299.99,
+    "price": 199.99,
     "releaseDate": "2010-10-10"
   }
 

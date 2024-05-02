@@ -45,7 +45,10 @@ namespace GameStore.api.Endpoints
         public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
         {
 
-            var group = app.MapGroup("games");
+            var group = app.MapGroup("games")
+                .WithParameterValidation(); // This method comes from MinimalApis.Extensions nuget package
+                                           // it helps with validation of the parameters using the annotations I wrote at the Dtos
+                                          // With this type of usage we actually apply this method to all the requests that we use in this RouteGroup
             // GET /games
             group.MapGet("/", () => games);
 

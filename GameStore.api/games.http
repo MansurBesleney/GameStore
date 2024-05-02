@@ -4,3 +4,32 @@ GET http://localhost:5115/games
 ###
 
 GET http://localhost:5115/games/1
+
+###
+
+POST http://localhost:5115/games
+Content-Type: application/json
+
+{
+  "name": "Control",
+  "genre": "ACtion-TPS",
+  "price": 75.99,
+  "releaseDate": "2016-06-06"
+}
+
+###
+
+PUT http://localhost:5115/games/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Red Dead Redemption 2 GOTY Edition",
+    "genre": "Masterpiece",
+    "price": 299.99,
+    "releaseDate": "2010-10-10"
+  }
+
+###
+
+DELETE http://localhost:5115/games/4

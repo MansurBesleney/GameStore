@@ -1,4 +1,6 @@
 ﻿using GameStore.api.Contracts;
+using GameStore.api.Data;
+using GameStore.api.Entities;
 
 namespace GameStore.api.Endpoints
 {
@@ -47,9 +49,9 @@ namespace GameStore.api.Endpoints
 
             var group = app.MapGroup("games")
                 .WithParameterValidation(); // This method comes from MinimalApis.Extensions nuget package
-                                           // it helps with validation of the parameters using the annotations I wrote at the Dtos
-                                          // With this type of usage we actually apply this method to all the requests that we use in this RouteGroup
-            // GET /games
+                                            // it helps with validation of the parameters using the annotations I wrote at the Dtos
+                                            // With this type of usage we actually apply this method to all the requests that we use in this RouteGroup
+                                            // GET /games
             group.MapGet("/", () => games);
 
             // GET /game/1
@@ -68,19 +70,30 @@ namespace GameStore.api.Endpoints
             }).WithName(GetGameEndpointName);
 
             //POST /games
-            group.MapPost("/", (CreateGameDto newGame) =>
+            group.MapPost("/", (CreateGameDto newGame, GameStoreContext dbcontext) =>
             {
-                GameDto game = new(
-                games.Count + 1,
-                newGame.Name,
-                newGame.Genre,
-                newGame.Price,
-                newGame.ReleaseDate
-                );
+                Game game = new()
+                {
+                    Name = newGame.Name,
+                    Genre = dbcontext.Genres.Find(newGame.GenreId),
+                    GenreId = newGame.GenreId,
+                    Price = newGame.Price,
+                    ReleaseDate = newGame.ReleaseDate,
 
-                games.Add(game);
+                };
 
-                return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
+                dbcontext.Games.Add(game);
+                dbcontext.SaveChanges();
+
+                GameDto gameDto = new(
+                        game.Id,
+                        game.Name,
+                        game.Genre!.Name,
+                        game.Price,
+                        game.ReleaseDate
+                    );
+
+                return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, gameDto);
             });
 
             //PUT games/1

@@ -11,10 +11,10 @@ POST http://localhost:5115/games
 Content-Type: application/json
 
 {
-  "name": "Uncharted 4",
-  "genreId": 3,
-  "price": 35.99,
-  "releaseDate": "2012-12-12"
+  "name": "IRacing",
+  "genreId": 5,
+  "price": 94.99,
+  "releaseDate": "2010-10-10"
 }
 
 ###

@@ -19,14 +19,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5115/games/1
+PUT http://localhost:5115/games/3
 Content-Type: application/json
 
 {
-    "id": 1,
-    "name": "Red Dead Redemption 2 GOTY ",
-    "genre": "Masterpiece",
-    "price": 199.99,
+    "name": "Need For Speed Underground 2",
+    "genreId": "5",
+    "price": 14.99,
     "releaseDate": "2010-10-10"
   }
 

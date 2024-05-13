@@ -17,18 +17,19 @@ namespace GameStore.api.Endpoints
                                             // it helps with validation of the parameters using the annotations I wrote at the Dtos
                                             // With this type of usage we actually apply this method to all the requests that we use in this RouteGroup
                                             // GET /games
-            group.MapGet("/", (GameStoreContext dbContext) =>
+            group.MapGet("/",  async (GameStoreContext dbContext) =>
             (
-                dbContext.Games
+                await dbContext.Games
                             .Include(game => game.Genre)
                             .Select(game => game.ToGameSummaryDto())
                             .AsNoTracking()
+                            .ToListAsync()
             ));
 
             // GET /game/1
-            group.MapGet("/{id}", (int id, GameStoreContext dbContext) =>
+            group.MapGet("/{id}", async (int id, GameStoreContext dbContext) =>
             {
-                Game? game = dbContext.Games.Find(id);
+                Game? game = await dbContext.Games.FindAsync(id);
 
                 if (game == null)
                 {
@@ -41,23 +42,23 @@ namespace GameStore.api.Endpoints
             }).WithName(GetGameEndpointName);
 
             //POST /games
-            group.MapPost("/", (CreateGameDto newGame, GameStoreContext dbcontext) =>
+            group.MapPost("/", async (CreateGameDto newGame, GameStoreContext dbcontext) =>
             {
                 Game game = newGame.ToEntity();
 
                 dbcontext.Games.Add(game);
-                dbcontext.SaveChanges();
+                await dbcontext.SaveChangesAsync();
 
                 return Results.CreatedAtRoute(
                     GetGameEndpointName, 
                     new { id = game.Id }, 
-                    game.ToGameDetailsDto);
+                    game.ToGameDetailsDto());
             });
 
             //PUT games/1
-            group.MapPut("/{id}", (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
+            group.MapPut("/{id}", async (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
             {
-                var existingGame = dbContext.Games.Find(id);
+                var existingGame = await dbContext.Games.FindAsync(id);
 
                 if (existingGame is null)
                 {
@@ -68,15 +69,15 @@ namespace GameStore.api.Endpoints
                         .CurrentValues
                         .SetValues(updatedGame.ToEntity(id));
 
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return Results.NoContent();
 
             });
 
             //DELETE games/1
-            group.MapDelete("/{id}", (int id, GameStoreContext dbContext) =>
+            group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
             {
-                dbContext.Games.Where(game => game.Id == id).ExecuteDelete();
+                await dbContext.Games.Where(game => game.Id == id).ExecuteDeleteAsync();
 
                 return Results.NoContent();
             });

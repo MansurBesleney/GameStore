@@ -3,7 +3,7 @@ GET http://localhost:5115/games
 
 ###
 
-GET http://localhost:5115/games/3
+GET http://localhost:5115/games/1
 
 ###
 
@@ -11,10 +11,10 @@ POST http://localhost:5115/games
 Content-Type: application/json
 
 {
-  "name": "IRacing",
-  "genreId": 5,
-  "price": 94.99,
-  "releaseDate": "2010-10-10"
+  "name": "Baldur's Gate 3",
+  "genreId": 2,
+  "price": 99.99,
+  "releaseDate": "2023-05-05"
 }
 
 ###

@@ -1,16 +1,72 @@
 ﻿@page "/"
+@using GameStore.Frontend.Models
 
 <PageTitle>Game Catalog</PageTitle>
 
-<table>
-    <thead>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Genre</th>
-        <th>Price</th>
-        <th>Release Date</th>
-        <th></th>
+<table class="table table-striped table-bordered table-hover mt-3">
+    <thead class="table-dark">
+    <th>Id</th>
+    <th>Name</th>
+    <th>Genre</th>
+    <th class="text-end">Price</th>
+    <th>Release Date</th>
+    <th></th>
     </thead>
 
-    <tbody></tbody>
+    <tbody>
+        @foreach(var game in games)
+        {
+            <tr>
+                <td>@game.Id</td>
+                <td>@game.Name</td>
+                <td>@game.Genre</td>
+                <td class="text-end">@game.Price.ToString("C2")</td>
+                <td>@game.ReleaseDate.ToString("dd/MM/yyyy")</td>
+                <td>
+
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@code {
+    private GameSummary[] games =
+    [
+            new(){
+                Id = 1,
+                Name = "Red Dead Redemption 2",
+                Genre = "Masterpiece",
+                Price = 59.99M,
+                ReleaseDate = new DateOnly(2019, 11, 9)
+            },
+            new(){
+                Id = 2,
+                Name = "IRacing",
+                Genre = "Simulation Racing",
+                Price = 29.99M,
+                ReleaseDate = new DateOnly(2018, 10, 8)
+            },
+            new(){
+                Id = 3,
+                Name = "Titanfall 2",
+                Genre = "FPS",
+                Price = 44.99M,
+                ReleaseDate = new DateOnly(2017, 10, 7)
+            },
+            new(){
+                Id = 4,
+                Name = "Street Fighter",
+                Genre = "Fighting",
+                Price = 69.99M,
+                ReleaseDate = new DateOnly(2016, 9, 6)
+            },
+            new(){
+                Id = 5,
+                Name = "Sekiro: Shadows Die Twice",
+                Genre = "Souls-like",
+                Price = 49.99M,
+                ReleaseDate = new DateOnly(2015, 8, 5)
+            },
+    ];
+}

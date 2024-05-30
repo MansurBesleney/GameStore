@@ -1,10 +1,11 @@
 ﻿@page "/editgame"
+@inject NavigationManager NavigationManager
 
 <PageTitle>New game</PageTitle>
 
 <h3>New Game</h3>
 
-@if(genres is null)
+@if (genres is null)
 {
     <p><em>Loading...</em></p>
 }
@@ -21,7 +22,7 @@ else
                     <label for="genre" class="form-label">Genre:</label>
                     <InputSelect id="genre" @bind-Value="game.GenreId" class="form-select">
                         <option value="">Select a genre</option>
-                        @foreach(var genre in genres)
+                        @foreach (var genre in genres)
                         {
                             <option value="@genre.Id">@genre.Name</option>
                         }
@@ -36,6 +37,7 @@ else
                     <InputDate id="releaseDate" @bind-Value="game.ReleaseDate" class="form-control" />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a role="button" href="/" class="btn btn-secondary">Cancel</a>
             </EditForm>
         </div>
     </div>
@@ -46,10 +48,10 @@ else
     [SupplyParameterFromForm]
 
     private GameDetails game { get; set; } = new()
-    {
-        Name = string.Empty,
-        ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
-    };
+        {
+            Name = string.Empty,
+            ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
+        };
 
     private GamesClient gamesClient = new();
 
@@ -65,6 +67,7 @@ else
     private void HandleSubmit()
     {
         gamesClient.InsertGame(game);
+        NavigationManager.NavigateTo("/");
     }
 
 }

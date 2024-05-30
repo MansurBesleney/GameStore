@@ -44,5 +44,22 @@ namespace GameStore.Frontend.Clients
         ];
 
         public GameSummary[] GetGames() => [.. games]; // [.. games] = games.ToArray()
+
+        public GenresClient genresClient = new();
+        public void InsertGame(GameDetails game)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
+
+            var gameSummary = new GameSummary
+            {
+                Id = games.Count + 1,
+                Name = game.Name,
+                Genre = genresClient.GetGenreById(int.Parse(game.GenreId)).Name,
+                Price = game.Price,
+                ReleaseDate = game.ReleaseDate,
+            };
+
+            games.Add(gameSummary);
+        }
     }
 }

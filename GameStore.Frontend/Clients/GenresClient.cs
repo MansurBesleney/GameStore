@@ -29,5 +29,10 @@ namespace GameStore.Frontend.Clients
         ];
 
         public Genre[] GetGenres() => genres;
+
+        public Genre GetGenreById(int id)
+        {
+            return genres[id - 1];
+        }
     }
 }

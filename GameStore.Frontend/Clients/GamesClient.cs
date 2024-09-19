@@ -48,14 +48,13 @@ namespace GameStore.Frontend.Clients
         private readonly Genre[] genres = new GenresClient().GetGenres();
         public void InsertGame(GameDetails game)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
-            var genre = genres.Single(genre => genre.Id == int.Parse(game.GenreId));
+            Genre genre = GetGenreById(game.GenreId);
 
             var gameSummary = new GameSummary
             {
                 Id = games.Count + 1,
                 Name = game.Name,
-                Genre =  genre.Name,
+                Genre = genre.Name,
                 Price = game.Price,
                 ReleaseDate = game.ReleaseDate,
             };
@@ -63,10 +62,11 @@ namespace GameStore.Frontend.Clients
             games.Add(gameSummary);
         }
 
+
+
         public GameDetails GetGameDetails(int id)
         {
-            GameSummary? game = games.Find(game => game.Id == id);
-            ArgumentNullException.ThrowIfNull(game);
+            GameSummary game = GetGameSummaryById(id);
 
             var genre = genres.Single(genre => string.Equals(
                 genre.Name,
@@ -82,5 +82,32 @@ namespace GameStore.Frontend.Clients
                 ReleaseDate = game.ReleaseDate,
             };
         }
+
+        public void UpdateGame(GameDetails game)
+        {
+            var genre = GetGenreById(game.GenreId);
+
+            GameSummary existingGame = GetGameSummaryById(game.Id);
+
+            existingGame.Name = game.Name;
+            existingGame.Price = game.Price;
+            existingGame.Genre = genre.Name;
+            existingGame.ReleaseDate = game.ReleaseDate;
+
+        }
+
+        private GameSummary GetGameSummaryById(int id)
+        {
+            GameSummary? game = games.Find(game => game.Id == id);
+            ArgumentNullException.ThrowIfNull(game);
+            return game;
+        }
+
+        private Genre GetGenreById(String? id)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(id);
+            return genres.Single(genre => genre.Id == int.Parse(id));
+        }
+
     }
 }

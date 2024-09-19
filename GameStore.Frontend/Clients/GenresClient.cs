@@ -26,6 +26,14 @@ namespace GameStore.Frontend.Clients
                     Id = 5,
                     Name = "Racing"
                 },
+                new(){
+                    Id = 6,
+                    Name = "Souls-like"
+                },
+                new(){
+                    Id= 7,
+                    Name="Action-adventure"
+                }
         ];
 
         public Genre[] GetGenres() => genres;

@@ -9,14 +9,14 @@ namespace GameStore.Frontend.Clients
                 new(){
                     Id = 1,
                     Name = "Red Dead Redemption 2",
-                    Genre = "Masterpiece",
+                    Genre = "Action-adventure",
                     Price = 59.99M,
                     ReleaseDate = new DateOnly(2019, 11, 9)
                 },
                 new(){
                     Id = 2,
                     Name = "IRacing",
-                    Genre = "Simulation Racing",
+                    Genre = "Racing",
                     Price = 29.99M,
                     ReleaseDate = new DateOnly(2018, 10, 8)
                 },
@@ -45,21 +45,42 @@ namespace GameStore.Frontend.Clients
 
         public GameSummary[] GetGames() => [.. games]; // [.. games] = games.ToArray()
 
-        public GenresClient genresClient = new();
+        private readonly Genre[] genres = new GenresClient().GetGenres();
         public void InsertGame(GameDetails game)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
+            var genre = genres.Single(genre => genre.Id == int.Parse(game.GenreId));
 
             var gameSummary = new GameSummary
             {
                 Id = games.Count + 1,
                 Name = game.Name,
-                Genre = genresClient.GetGenreById(int.Parse(game.GenreId)).Name,
+                Genre =  genre.Name,
                 Price = game.Price,
                 ReleaseDate = game.ReleaseDate,
             };
 
             games.Add(gameSummary);
+        }
+
+        public GameDetails GetGameDetails(int id)
+        {
+            GameSummary? game = games.Find(game => game.Id == id);
+            ArgumentNullException.ThrowIfNull(game);
+
+            var genre = genres.Single(genre => string.Equals(
+                genre.Name,
+                game.Genre,
+                StringComparison.OrdinalIgnoreCase));
+
+            return new GameDetails
+            {
+                Id = game.Id,
+                Name = game.Name,
+                GenreId = genre.Id.ToString(),
+                Price = game.Price,
+                ReleaseDate = game.ReleaseDate,
+            };
         }
     }
 }

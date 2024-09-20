@@ -96,6 +96,13 @@ namespace GameStore.Frontend.Clients
 
         }
 
+        public void DeleteGame(int id)
+        {
+            var game = GetGameSummaryById(id);
+
+            games.Remove(game);
+        }
+
         private GameSummary GetGameSummaryById(int id)
         {
             GameSummary? game = games.Find(game => game.Id == id);

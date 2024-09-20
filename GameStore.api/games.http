@@ -11,10 +11,10 @@ POST http://localhost:5115/games
 Content-Type: application/json
 
 {
-  "name": "Baldur's Gate 3",
-  "genreId": 2,
-  "price": 99.99,
-  "releaseDate": "2023-05-05"
+  "name": "IRacing",
+  "genreId": 5,
+  "price": 69.99,
+  "releaseDate": "2018-11-03"
 }
 
 ###
